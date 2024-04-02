@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gaurav Chat</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+  }
+  .chat-container {
+    max-width: 400px;
+    margin: 20px auto;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .chat-header {
+    background-color: #075e54;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    font-size: 24px;
+  }
+  .chat-messages {
+    height: 300px;
+    overflow-y: scroll;
+    padding: 10px;
+  }
+  .message {
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    max-width: 70%;
+    clear: both;
+    overflow-wrap: break-word;
+    animation: fadeIn 0.5s ease;
+  }
+  .message-user {
+    background-color: #dcf8c6;
+    float: right;
+  }
+  .message-bot {
+    background-color: #eaeaea;
+    float: left;
+  }
+  .message-text {
+    margin: 0;
+    font-size: 16px;
+  }
+  .message-time {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+    text-align: right;
+  }
+  .message-input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: none;
+    border-top: 1px solid #ccc;
+    resize: none;
+    outline: none;
+    font-size: 16px;
+  }
+  .send-button {
+    width: 100%;
+    background-color: #075e54;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="chat-container">
+  <div class="chat-header">Gaurav Chat</div>
+  <div class="chat-messages" id="chat-messages">
+    
+  </div>
+  <textarea class="message-input" id="user-input" placeholder="Type your message..."></textarea>
+  <button class="send-button" onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+function getResponse(userInput) {
+  var responses = [
+    "Hello! How can I assist you today?",
+    "What can I do for you?",
+    "How can I help you?",
+    "Nice to meet you! What's on your mind?"
+  ];
+  return responses[Math.floor(Math.random() * responses.length)];
+}
+
+function getCurrentTime() {
+  var now = new Date();
+  var hours = now.getHours();
+  var minutes = now.getMinutes();
+  var ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; 
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  var timeString = hours + ':' + minutes + ' ' + ampm;
+  return timeString;
+}
+
+function sendMessage() {
+  var userInput = document.getElementById("user-input").value;
+  if (userInput.trim() === '') return; 
+  var chatMessages = document.getElementById("chat-messages");
+  var userMessage = document.createElement("div");
+  userMessage.classList.add("message", "message-user");
+  userMessage.innerHTML = '<p class="message-text">' + userInput + '</p><p class="message-time">' + getCurrentTime() + '</p>';
+  chatMessages.appendChild(userMessage);
+  var botMessage = document.createElement("div");
+  botMessage.classList.add("message", "message-bot");
+  botMessage.innerHTML = '<p class="message-text">' + getResponse(userInput) + '</p><p class="message-time">' + getCurrentTime() + '</p>';
+  chatMessages.appendChild(botMessage);
+  document.getElementById("user-input").value = "";
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+</script>
+</body>
+</html>
